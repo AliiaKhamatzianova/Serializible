@@ -89,7 +89,7 @@ namespace ConsoleApplication1
 
             public void foo()
             {
-                //_student._field;
+                //_student._field;//
             }
         }
 

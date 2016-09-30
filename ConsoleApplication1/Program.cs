@@ -9,7 +9,8 @@ using System.Xml.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Runtime.Serialization.Formatters.Soap;
-
+using System.Collections;
+using ClassLibrary1;
 
 namespace ConsoleApplication1
 {
@@ -146,17 +147,95 @@ namespace ConsoleApplication1
 
     }
 
-        class Program
+    public abstract class Animal
+    {
+        public double Weight { get; private set; }
+
+        protected bool Hungry { get; private set; } = true;
+
+        private void Eat()
+        {
+            if(!_hungry)
+                Weight *= 1.01;
+        }
+
+        public virtual void Feed()
+        {
+            Eat();
+        }
+
+        public abstract void Say();
+
+        public virtual void Run()
+        {
+            if (Hungry)
+                Weight *= 0.99;
+            else
+                Hungry = true;
+        }
+
+        protected Animal(double weight)
+        {
+            Weight = weight;
+        }
+    }
+
+    public class Cat : Animal
+    {
+        private enum Mood { Good, Bad}
+
+        private Mood _mood = Mood.Good;
+
+        public void Pet()
+        {
+            _mood = Mood.Good;
+        }
+
+        public override void Say()
+        {
+            Console.WriteLine(Name + ": " +(_mood==Mood.Good?"Purr":"Mew"));
+        }
+
+        public sealed override void Feed()
+        {
+            base.Feed();
+            _mood = Mood.Good;
+        }
+
+        public override void Run()
+        {
+            base.Run();
+            _mood = Mood.Bad;
+        }
+
+        public string Name { get; }
+
+        public Cat(double weight) : base(weight)
+        {
+        }
+         
+        public Cat (string name, double weight) : base(weight)
+        {
+            Name = name;
+        }
+
+    }
+
+
+
+    class Program
         {
             static void Main(string[] args)
             {
-                /*
-                myValueType v = new myValueType(1,"one");
-                myValueType v2 = v;
-                v.setCode(5);
+            #region
+            /*
+            myValueType v = new myValueType(1,"one");
+            myValueType v2 = v;
+            v.setCode(5);
 
-                Console.WriteLine(v.getCode());
-                Console.WriteLine(v2.getCode())*/;
+            Console.WriteLine(v.getCode());
+            Console.WriteLine(v2.getCode())*/
+            ;
 
             /*MyReferenceType r = new MyReferenceType(1, "one");
             MyReferenceType r2 = r;
@@ -166,14 +245,14 @@ namespace ConsoleApplication1
             Console.WriteLine(r.Code);//r.GetCode());
             Console.WriteLine(r2.GetCode());*/
 
-                //Student s = new Student
-                //{
-                //    Id = 1,
-                //    BirthDate = new DateTime(1995, 1, 1),
-                //    Name ="Ivan"
-                //};
+            //Student s = new Student
+            //{
+            //    Id = 1,
+            //    BirthDate = new DateTime(1995, 1, 1),
+            //    Name ="Ivan"
+            //};
 
-            Student s2 = new Student(2,"petya",new DateTime(1995,12,12));
+            /*Student s2 = new Student(2,"petya",new DateTime(1995,12,12));
 
             //Student s3 = new Student(name: "petya", id:2,  birthDate:new DateTime(1995, 12, 12));
 
@@ -236,8 +315,54 @@ namespace ConsoleApplication1
             {
                 var sf = new SoapFormatter();
                 s6 = (Student)sf.Deserialize(fs);
-            }
+            }*/
+            #endregion
+
+            #region
+            /*
+            DerrivedClass d = new DerrivedClass();
+
+            BaseClass b = d;
+
+            Console.WriteLine(d);
+
+            Console.WriteLine(b);
+            */
+            #endregion
+
+            #region
+
+            //object box = (int)1024;
+            //int unboxIint = (int)box;
+
+            // Console.WriteLine(1024);
+            #endregion
+
+            #region
+
+            /*Nullable<int> x; //int? x;
+            x = null;*/
+            #endregion
+            #region
+
+            //List<int> intList = new List<int>();
+            //List<double> doubleList = new List<double>();
+            //intList.Add(1);
+            #endregion
+
+            #region
+            /*ArrayList l = new ArrayList();
+            l.Add(1);
+            l.Add(1.5);*/
+            /*
+            BaseClass b = new BaseClass();
+            Console.ReadKey();*/
+            #endregion
+
+            Animal barsik = new Cat("Barsik",5);
+
+
         }
-            
-        }
+
+    }
 }
